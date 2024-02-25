@@ -1,0 +1,62 @@
+<div>
+
+  <h4>Browser By quiz catagory </h4>
+
+
+  <!-- catagory wise filte section stars here --------------------- -->
+
+
+
+  <section style="display: flex;">
+
+    {% for i in category %}
+
+    <div style="margin-top: 20px; gap: 20px; scroll-behavior: smooth;">
+      <nav style="border: 10px; gap: 20px; " aria-label="...">
+        <ul class="pagination pagination-lg">
+
+          <li style="margin-left: 20px; scroll-behavior: smooth;" class="page-item"><a class="page-link"
+              href="{% url 'catagory_wise_filter' i.slug %}">{{i.name}}</a>
+          </li>
+
+        </ul>
+      </nav>
+    </div>
+    {% endfor %}
+
+  </section>
+
+  <h1>filtered quiz</h1>
+
+  {% for i in filtered_quiz.all %}
+
+  <h1>{{ i.title }}</h1>
+
+
+
+  {% endfor %}
+
+
+  <h1>filtered quiz ends here</h1>
+
+
+  <!-- all quiz model here ---------- -->
+
+
+  <div style="display: flex;">
+    {% for i in quizes %}
+  <div class="card" style="width: 18rem;">
+    {% if i.image%}
+    <img src="{{i.image.url}}" class="card-img-top" alt="...">
+    {% else %}
+    <p>No image</p>
+    {% endif %}
+    <div class="card-body">
+      <h5 class="card-title"><a style="text-decoration: none;" href="">Quiz name : :{{i.title}}</a></h5>
+      <!-- <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p> -->
+
+    </div>
+  </div>
+
+  {% endfor %}
+  </div>

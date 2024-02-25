@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+
+{% block body %}
+
+<!-- Quiz Section -->
+<p class="card-text">Answer the following questions:</p>
+
+<div style="margin: auto; width: 50%; margin-top: 10px;">
+
+{% for quiz in questions %}
+<div class="card"  id="question{{ forloop.counter }}" >
+    <div class="card-body">
+        <!-- Question 1 -->
+        <div class="mb-3">
+            <h6>{{quiz.quizQuestion}}</h6>
+
+
+            {% for answer in quiz.answer_tracker.all %}
+
+            <form method="post" action="{% url 'submit_answer' %}">
+                {% csrf_token %}
+
+            <div class="form-check" >
+                <input class="form-check-input" type="radio" name="question1" id="q1Option1" value="option1">
+                <label class="form-check-label" for="q1Option1">{{answer.possible_quiz_answer}}</label>
+            </div>
+            
+            {% endfor %}
+          
+         
+
+            <!-- Add more options as needed -->
+        </div>
+        <button type="submit" class="btn btn-primary">Submit Answers</button>
+    </form>
+
+
+
+        <!-- Add more questions as needed -->
+
+        <!-- Submit Button -->
+        
+    </div>
+
+</div>
+
+
+{% endfor %}
+
+</div>
+</div>
+
+
+
+
+
+
+
+
+{% endblock body %}

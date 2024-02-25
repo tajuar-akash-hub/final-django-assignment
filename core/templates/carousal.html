@@ -1,0 +1,42 @@
+<div class="container">
+    
+    <div class="swiffy-slider">
+        <ul class="slider-container">
+            {% for quiz in quizes %}
+            <li class="slider-item">
+                <div class="d-flex align-items-center justify-content-center banner" style="background-color: #f1f1f1; height: 300px; 
+                    background-image: url('{{ quiz.quiz_banner.url }}'); 
+                    background-size: cover; 
+                    background-position: center; 
+                    background-repeat: no-repeat;
+                    width: 100%;
+                    height: 50vh;
+                    ">
+                    <div class="text-center">
+                        <!-- <h1  style="color:black;" class="card-title">{{ quiz.title }}</h1> -->
+                        <!-- <p style="width: 66%; margin: auto;">{{ quiz.quiz_description }}</p> -->
+                    </div>
+                    <div style="margin-left: 20px";>
+                        <button class="btn btn-primary"><a style="color: white ; text-decoration: none;" href="{% url 'quiz_view' quiz.id %}  ">Go to quizes</a></button>
+                    </div>
+                </div>
+                
+
+            </li>
+            
+            {% endfor %}
+            
+        </ul>
+    
+        <button type="button" class="slider-nav" aria-label="Go left"></button>
+        <button type="button" class="slider-nav slider-nav-next" aria-label="Go left"></button>
+    
+        <div class="slider-indicators">
+            {% for _ in quizzes %}
+            <button class=""></button>
+            {% endfor %}
+        </div>
+    </div>
+    
+    
+</div>

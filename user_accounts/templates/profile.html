@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block body %}
+
+
+<h4>Welcome ---------- {{user}}</h4>
+<p>Change your pass without old password <a href="{% url 'change_pass2' %}">Change pass without old pass</a></p>
+<p>Update your profile <a href="{% url 'update_profile' %}">Update profile</a></p>
+
+
+
+<h1>This is profile</h1>
+
+{% endblock body %}
