@@ -44,8 +44,6 @@ def catagory_wise_filter(request,category_slug=None):
 def quiz_view(request,quiz_model_id):
     quiz_questin_filter= get_object_or_404(quiz_model, pk=quiz_model_id)
     questions = quiz_questin_filter.questions_tracker.all()
-    
-
     PAGINATOR = Paginator( quiz_questin_filter.questions_tracker.all(),1)
     page = request.GET.get('page')
     all_quiz_data_paginator = PAGINATOR.get_page(page)
@@ -74,11 +72,11 @@ def submit_answer(request,quiz_question_id):
         print("user's submission :", selected_option)
         is_correct = selected_option == correct_answer
 
-        if is_correct:
-             messages.success(request, 'Your answer is correct!')
+        # if is_correct:
+        #      messages.success(request, 'Your answer is correct!')
 
-        else:
-             messages.success(request, 'Your answer is incorrect!')
+        # else:
+        #      messages.success(request, 'Your answer is incorrect!')
             
 
     context = {

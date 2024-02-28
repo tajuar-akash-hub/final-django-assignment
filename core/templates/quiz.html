@@ -13,9 +13,10 @@
             <!-- Question 1 -->
             <div class="mb-3">
                 <h6>{{quiz.quizQuestion}}</h6>
+                <h1>quiz id : {{ quiz.id }}</h1>
                 {% for answer in quiz.answer_tracker.all %}
 
-                <form method="post" action="">
+                <form method="post" action="{% url 'submit_answer' quiz.id  %}">
                     {% csrf_token %}
 
                     <div class="form-check">
@@ -30,7 +31,7 @@
 
                     <!-- Add more options as needed -->
             </div>
-            <button type="submit" class="btn btn-primary"><a style="text-decoration: none; color: white;" href="{% url 'submit_answer' quiz.id  %}">Submit Answers</a></button>
+            <button type="submit" class="btn btn-primary"><a style="text-decoration: none; color: white;" href="">Submit Answers</a></button>
 
 
 
@@ -62,7 +63,7 @@
 
         <div style="margin-top: 40px; gap: 20px;">
             {% if all_quiz_data_paginator.has_next %}
-            <a class="btn btn-primary" href="?page={{all_quiz_data_paginator.next_page_number}}">Next Page</a>
+            <a class="btn btn-primary" href="?page={{all_quiz_data_paginator.next_page_number}} ">Next Page</a>
             {% endif %}
     
         </div>
