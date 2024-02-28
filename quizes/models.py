@@ -11,8 +11,8 @@ class quiz_model(models.Model):
     time_limit = models.BooleanField(default=False)
     creation_time = models.DateField( auto_now_add=True)
     update_time = models.DateField(auto_now=True)
-    image = models.ImageField( upload_to=None, height_field=None, null=True,blank=True)
-    quiz_banner = models.ImageField(upload_to=None, blank=True,null=True)
+    image = models.ImageField(upload_to='quizes/media/uploads',null=True,blank=True)
+    quiz_banner = models.ImageField(upload_to='quizes/media/uploads', blank=True,null=True)
     def __str__(self) -> str:
         return f'{self.title}'
     
@@ -22,29 +22,21 @@ class quiz_Question(models.Model):
     quizMark = models.IntegerField(default=1)
     correct_quiz_answer = models.CharField(blank=True,null=True,max_length=50)
     def __str__(self):
-        return f'{self.quizQuestion} and {self.correct_quiz_answer}'
+        return f'{self.quizQuestion} ans :  {self.correct_quiz_answer} , id {self.id}'
     
 class quiz_answer(models.Model):
     quiz_question = models.ForeignKey(quiz_Question,related_name="answer_tracker" , on_delete=models.CASCADE)
     possible_quiz_answer = models.CharField(blank=True,null=True,max_length=50)
-   
     def __str__(self) -> str:
-        return f'{self.quiz_question} possible answer : {self.possible_quiz_answer}'
-
-
+        return f'{self.quiz_question} possible answer : {self.possible_quiz_answer}, id {self.id}'
 
 class Quiz_rating_model(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     quiz = models.ForeignKey(quiz_model, on_delete=models.CASCADE)
     quiz_rating = models.PositiveIntegerField(choices=rating_list)
-
     def __str__(self):
         return f'{self.user.username} - {self.quiz.title} - {self.rating}'
-
-
-
-
-
+    
 class Choice(models.Model):
     quiz_question = models.ForeignKey(quiz_Question, on_delete=models.CASCADE)
     quiz_Answer = models.CharField(max_length=255)

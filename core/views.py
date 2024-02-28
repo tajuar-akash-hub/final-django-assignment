@@ -1,9 +1,12 @@
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 from catagories.models import Category_model
 from django.http import HttpResponse
 from quizes.models import quiz_model,quiz_Question
 from catagories.models import Category_model
 from django.shortcuts import render, get_object_or_404
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.contrib import messages
+
 
 
 # Create your views here.
@@ -21,53 +24,70 @@ def home(request):
     return render(request,"home.html",context)
 
 
-
-
-def quiz_view(request,id):
-    # quiz_questin_filter= quiz_Question.objects.filter(id=id)
-
-    quiz_questin_filter= get_object_or_404(quiz_model, pk=id)
-    questions = quiz_questin_filter.questions_tracker.all()
-    # correct_answer =questions.questions_tracker.correct_quiz_answer
-
-    # bringing data frontend to backend
-    # if request.method == 'POST':
-    #     print("printing post",request.POST)
-    context = {
-        'filtered_quizes':quiz_questin_filter,
-        'questions': questions,
-       
-    }
-
-    return render(request,"quiz.html",context)
-
-
 def catagory_wise_filter(request,category_slug=None):
-    
     quiz_model_details = quiz_model.objects.all()
     if category_slug is not None:
          category_model_slug=Category_model.objects.get(slug = category_slug) #getting the slug field of catagory ? 
          print("printing category slug here :",category_slug)
-         quiz_model_details =quiz_model.objects.get(quiz_category = category_model_slug)
-         print(quiz_model_details)
-
-        
+         quiz_model_details =quiz_model.objects.filter(quiz_category = category_model_slug)
+         print("pringitn quiz detils",quiz_model_details)
     quiz_model_all = quiz_model.objects.all()
+   
 
     context = {
+        'quiz_model_all':quiz_model_all,
         'filtered_quiz' : quiz_model_details,
         
-
     }
-
     return render(request,"home.html",context)
-        
-         
+
+def quiz_view(request,quiz_model_id):
+    quiz_questin_filter= get_object_or_404(quiz_model, pk=quiz_model_id)
+    questions = quiz_questin_filter.questions_tracker.all()
     
 
-def submit_answer(request):
-    print(request.POST.cleaned_data[''])
-    return render(request,"quiz_response.html")
+    PAGINATOR = Paginator( quiz_questin_filter.questions_tracker.all(),1)
+    page = request.GET.get('page')
+    all_quiz_data_paginator = PAGINATOR.get_page(page)
+    context = {
+        'filtered_quizes':quiz_questin_filter,
+        'questions': questions,
+        'all_quiz_data_paginator':all_quiz_data_paginator
+    }
+
+    return render(request,"quiz.html",context)
+
+def submit_answer(request,quiz_question_id):
+    print("printing quiz id",quiz_question_id)
+
+    # quiz_instance = quiz_Question()
+    quiz_answer_model_instance = get_object_or_404(quiz_Question, pk=quiz_question_id)
+    correct_answer = quiz_answer_model_instance.correct_quiz_answer
+
+
+    print("printin correct answer ",correct_answer)
+    
+    selected_option=[]
+    if request.method == 'POST':
+        # Assuming your form field name is 'selected_option'
+        selected_option = request.POST.get('question1')  #the option or radio button user clcked
+        print("user's submission :", selected_option)
+        is_correct = selected_option == correct_answer
+
+        if is_correct:
+             messages.success(request, 'Your answer is correct!')
+
+        else:
+             messages.success(request, 'Your answer is incorrect!')
+            
+
+    context = {
+        'correct_answer':correct_answer,
+        'selected_option':selected_option,
+    }   
+    return render(request,"quiz_response.html",context)
+
+    
 
 
 # def quiz_view(request, category_slug):
