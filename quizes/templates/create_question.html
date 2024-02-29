@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block body %}
+<h1>inside quiz question add </h1>
+{% load crispy_forms_tags %}
+<form style="margin: auto; width: 50%;" method="post" " >
+    {% csrf_token %}
+    {{form | crispy}}
+    <button class="btn btn-primary" type="submit">Submit</button>
+
+</form>
+    
+{% endblock body %}

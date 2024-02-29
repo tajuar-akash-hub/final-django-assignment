@@ -39,9 +39,10 @@
         {% if user.is_authenticated %}
 
         {% if request.user.is_staff %}
-        <a class="btn btn-danger" href="">Add Catagory</a>
+        <a class="btn btn-danger" href="{% url 'create_category' %}">Add Catagory</a>
         <a class="btn btn-danger" href="{% url 'create_quiz' %}">Add quiz</a>
-        <a class="btn btn-danger" href="">Add question</a>
+        <a class="btn btn-danger" href="{% url 'create_question' %}">Add question</a>
+        <a class="btn btn-danger" href="{% url 'create_answer' %}">Add answer</a>
         {% endif %}
         
         

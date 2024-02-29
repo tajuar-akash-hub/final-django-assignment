@@ -1,17 +1,13 @@
 from django.shortcuts import render,redirect
 from catagories.models import Category_model
 from django.http import HttpResponse
-from quizes.models import quiz_model,quiz_Question
+from quizes.models import quiz_model,quiz_Question,quiz_history_of_user
 from catagories.models import Category_model
 from django.shortcuts import render, get_object_or_404
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.contrib import messages
 from django.urls import reverse
 from django.contrib.sites.shortcuts import get_current_site
-
-
-
-
 # Create your views here.
 def home(request):
     quiz =quiz_model.objects.all()
@@ -21,7 +17,6 @@ def home(request):
         'quizes':quiz,
         'question':quiz_question,
         'category':catagory_all_for_browse,
-
     }
     
     return render(request,"home.html",context)
@@ -45,18 +40,23 @@ def catagory_wise_filter(request,category_slug=None):
     return render(request,"home.html",context)
 
 def quiz_view(request,quiz_model_id):
-    quiz_questin_filter= get_object_or_404(quiz_model, pk=quiz_model_id)
+    quiz_questin_filter = get_object_or_404(quiz_model, pk=quiz_model_id)
     questions = quiz_questin_filter.questions_tracker.all()
-    PAGINATOR = Paginator( quiz_questin_filter.questions_tracker.all(),1)
+    PAGINATOR = Paginator( quiz_questin_filter.questions_tracker.all().order_by('id'),1)
     page = request.GET.get('page')
     all_quiz_data_paginator = PAGINATOR.get_page(page)
+    
     context = {
-        'filtered_quizes':quiz_questin_filter,
-        'questions': questions,
+        # 'filtered_quizes':quiz_questin_filter,
+        # 'questions': questions,
         'all_quiz_data_paginator':all_quiz_data_paginator
     }
 
     return render(request,"quiz.html",context)
+
+
+
+
 
 def submit_answer(request,quiz_question_id,page_number=None,quiz_model_id=None):
     # page_number=int(page_number)
@@ -107,6 +107,7 @@ def submit_answer(request,quiz_question_id,page_number=None,quiz_model_id=None):
     redirect_url += f'?page={page_number}'
 
     return redirect(redirect_url)
+
     
     
 
@@ -178,15 +179,7 @@ def submit_answer(request,quiz_question_id,page_number=None,quiz_model_id=None):
 
 
 
-# def home(request,book_model_slug=None):
 
-#     book_model_detials = Book_model.objects.all()
-#     if book_model_slug is not None:
-#         book_mode_slug_field= Category_model.objects.get(slug=book_model_slug)
-#         book_model_detials= Book_model.objects.filter(categories=book_mode_slug_field)
-
-#     catagory_details = Category_model.objects.all()
-#     return render(request,"./home.html",{'catagory_details':catagory_details,'book_model_detials':book_model_detials})
 
 
 
