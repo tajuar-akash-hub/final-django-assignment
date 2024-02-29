@@ -14,7 +14,7 @@ class quiz_model(models.Model):
     image = models.ImageField(upload_to='quizes/media/uploads',null=True,blank=True)
     quiz_banner = models.ImageField(upload_to='quizes/media/uploads', blank=True,null=True)
     def __str__(self) -> str:
-        return f'{self.title}'
+        return f'{self.title} , id = {self.id} ' 
     
 class quiz_Question(models.Model):
     quiz = models.ForeignKey(quiz_model, on_delete=models.CASCADE, related_name='questions_tracker', default=1)

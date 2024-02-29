@@ -11,12 +11,14 @@
     <div class="card" id="question{{ forloop.counter }}">
         <div class="card-body">
             <!-- Question 1 -->
+            
             <div class="mb-3">
                 <h6>{{quiz.quizQuestion}}</h6>
                 <h1>quiz id : {{ quiz.id }}</h1>
+                
                 {% for answer in quiz.answer_tracker.all %}
 
-                <form method="post" action="{% url 'submit_answer' quiz.id  %}">
+                <form method="post" action="{% url 'submit_answer' quiz.id all_quiz_data_paginator.number quiz.quiz.id %}">
                     {% csrf_token %}
 
                     <div class="form-check">
@@ -25,7 +27,15 @@
                         <label class="form-check-label" for="q1Option1">{{answer.possible_quiz_answer}}</label>
                     </div>
 
+
+                 
+
+
+
+
                     {% endfor %}
+
+
 
 
 
@@ -36,15 +46,30 @@
 
 
             </form>
+
+
+            
+            <!-- showing the message to the user , coming from backend  -->
+                {% if messages %}
+                    {% for msg in messages %}
+                        
+                        <!-- {% if msg.tags == 'success' %}
+                        <h1><i class="fa-solid fa-check"></i></h1>
+                        {% endif %} -->
+                        {{msg}}
+                    {% endfor %}
+                {% endif %}
+          
+
+
+
         </div>
 
     </div>
 
 
 
-    {% for msg in messages  %}
-    <h1>{{ msg }}</h1>
-    {% endfor %}
+   
 
 
 
