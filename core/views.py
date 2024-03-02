@@ -8,6 +8,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.contrib import messages
 from django.urls import reverse
 from django.contrib.sites.shortcuts import get_current_site
+from quizes.forms import Quiz_Rating_Form
 # Create your views here.
 def home(request):
     quiz =quiz_model.objects.all()
@@ -109,63 +110,29 @@ def submit_answer(request,quiz_question_id,page_number=None,quiz_model_id=None):
     return redirect(redirect_url)
 
     
-    
+def rate_quiz(request, quiz_id):
+    quiz = get_object_or_404(quiz_model, id=quiz_id)
+
+    if request.method == 'POST':
+        form = Quiz_Rating_Form(request.POST)
+        if form.is_valid():
+            rating = form.cleaned_data['rating']
+            Quiz_Rating_Form.objects.create(
+                user=request.user, quiz=quiz, rating=rating)
+           
+            return redirect('rating_history')
+    else:
+        form = Quiz_Rating_Form()
+
+    context = {
+        'quiz': quiz,
+        'form': form,
+    }
+
+    return render(request, 'rate_quiz.html', context)  
 
 
     
-
-
-# def quiz_view(request, category_slug):
-#     # Assuming you have a Category model with a 'slug' field
-#     category = get_object_or_404(Category_model, slug=category_slug)
-
-#     # Assuming you have a Quiz model with a 'category' field
-#     quiz = get_object_or_404(quiz_model, category=category)
-#     questions = quiz_Question.objects.filter(quiz=quiz)
-#     totalMarksOfAllQuestions = sum(question.quizMark for question in questions)
-
-#     if request.method == 'POST':
-#         # Handle form submission for each question
-#         score = 0
-#         totalMarks = 0
-#         selected_choices = []
-#         for question in questions:
-#             totalMarks += question.quizMark
-#             selected_choice_id = request.POST.get(
-#                 f'question_{question.id}_choice')
-
-#             selected_choice = get_object_or_404(Choice, id=selected_choice_id)
-#             selected_choices.append(selected_choice)
-
-#             # Check if the selected choice is correct
-#             if selected_choice.is_correct:
-#                 # score += 1
-#                 score += question.quizMark
-
-#         # Save user quiz history
-#         user_quiz_history = UserQuizHistory(
-#             user=request.user, quiz=quiz, score=score, totalMarks=totalMarks)
-#         user_quiz_history.save()
-#         user_quiz_history.selected_choices.set(selected_choices)
-
-#         # Send email to the user
-#         subject = 'Quiz Completion'
-#         # message = f'Thank you for completing the quiz "{quiz.title}". Your score is {score}/{len(questions)}.'
-#         message = f'Thank you for completing the quiz "{quiz.title}". Your score is {score}/{totalMarks}.'
-#         from_email = EMAIL_HOST_USER
-#         recipient_list = [request.user.email]
-
-#         send_mail(subject, message, from_email,
-#                   recipient_list, fail_silently=False)
-
-#         return redirect('quiz_result', quiz_id=quiz.id)
-
-#     context = {
-#         'quiz': quiz,
-#         'questions': questions,
-#         'totalMarksOfAllQuestions': totalMarksOfAllQuestions
-#     }
-#     return render(request, 'quiz.html', context)
 
 
 
