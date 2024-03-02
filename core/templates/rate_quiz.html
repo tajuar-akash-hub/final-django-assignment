@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% block body %}
+<h1>inside quiz rating</h1>
+
+
+<div class="container mt-5">
+    <h1 class="text-center">{{ quiz.title }}</h1>
+
+    <form method="post" class="my-5 text-center">
+        {% csrf_token %}
+
+        <div class="form-check form-check-inline">
+            <input type="radio" name="rating" id="rating1" value="1" class="form-check-input">
+            <label for="rating1" class="form-check-label">1</label>
+        </div>
+
+        <div class="form-check form-check-inline">
+            <input type="radio" name="rating" id="rating2" value="2" class="form-check-input">
+            <label for="rating2" class="form-check-label">2</label>
+        </div>
+
+        <div class="form-check form-check-inline">
+            <input type="radio" name="rating" id="rating3" value="3" class="form-check-input">
+            <label for="rating3" class="form-check-label">3</label>
+        </div>
+
+        <div class="form-check form-check-inline">
+            <input type="radio" name="rating" id="rating4" value="4" class="form-check-input">
+            <label for="rating4" class="form-check-label">4</label>
+        </div>
+
+        <div class="form-check form-check-inline">
+            <input type="radio" name="rating" id="rating5" value="5" class="form-check-input">
+            <label for="rating5" class="form-check-label">5</label>
+        </div>
+
+        <div class="form-check form-check-inline">
+            <input type="radio" name="rating" id="rating6" value="6" class="form-check-input">
+            <label for="rating6" class="form-check-label">6</label>
+        </div>
+
+        <div class="form-check form-check-inline">
+            <input type="radio" name="rating" id="rating7" value="7" class="form-check-input">
+            <label for="rating7" class="form-check-label">7</label>
+        </div>
+        {% if user.is_authenticated and not user.is_staff %}
+        <div class="text-center">
+            <button type="submit" class="btn btn-primary mt-3">Submit Rating</button>
+        </div>
+        {% endif %}
+    </form>
+
+
+
+    
+{% endblock body %}

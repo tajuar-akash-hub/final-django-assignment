@@ -8,6 +8,8 @@
 <div style="margin: auto; width: 50%; margin-top: 10px;">
 
     {% for quiz in all_quiz_data_paginator %}
+    <button class="btn btn-primary"><a  style="text-decoration: none; color: white;" href="{% url 'rate_quiz' quiz.quiz.id %}">Rate this quiz</a> </button>
+
     <div class="card" id="question{{ forloop.counter }}">
         <div class="card-body">
             <!-- Question 1 -->

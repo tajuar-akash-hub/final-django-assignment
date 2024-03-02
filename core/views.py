@@ -9,6 +9,7 @@ from django.contrib import messages
 from django.urls import reverse
 from django.contrib.sites.shortcuts import get_current_site
 from quizes.forms import Quiz_Rating_Form
+from quizes.models import Quiz_rating_model
 # Create your views here.
 def home(request):
     quiz =quiz_model.objects.all()
@@ -110,17 +111,16 @@ def submit_answer(request,quiz_question_id,page_number=None,quiz_model_id=None):
     return redirect(redirect_url)
 
     
-def rate_quiz(request, quiz_id):
-    quiz = get_object_or_404(quiz_model, id=quiz_id)
+def rate_quiz(request, quiz_model_id):
+    quiz = get_object_or_404(quiz_model, id=quiz_model_id)
 
     if request.method == 'POST':
         form = Quiz_Rating_Form(request.POST)
         if form.is_valid():
             rating = form.cleaned_data['rating']
-            Quiz_Rating_Form.objects.create(
-                user=request.user, quiz=quiz, rating=rating)
-           
-            return redirect('rating_history')
+            Quiz_rating_model.objects.create(
+                user=request.user, quiz=Quiz_rating_model, quiz_rating=rating)
+            return redirect('home')
     else:
         form = Quiz_Rating_Form()
 

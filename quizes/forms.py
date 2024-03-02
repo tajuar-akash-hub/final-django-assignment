@@ -43,4 +43,4 @@ class Quiz_Rating_Form(forms.ModelForm):
     )
     class Meta:
         model = Quiz_rating_model
-        fields = ['rating']
+        fields = ['quiz_rating']
